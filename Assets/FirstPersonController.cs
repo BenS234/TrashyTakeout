@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FirstPersonController : MonoBehaviour
 {
@@ -16,6 +17,11 @@ public class FirstPersonController : MonoBehaviour
     public float delay;
     public bool canFire;
     public GameObject target;
+    public int bulletCount;
+    public bool reload;
+    public float reloadTimer;
+    public TMP_Text gunInfoText;
+    public Transform playerSpawn;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +30,24 @@ public class FirstPersonController : MonoBehaviour
         canJump = true;
         canFire = true;
         delay = 0;
+        reloadTimer = 0;
+        reload = false;
+        bulletCount = 30;
+        gunInfoText.text = bulletCount + "/30";
+        transform.position = playerSpawn.position;
     }
     
     void Update()
     {
+
+        if (reload)
+        {
+            gunInfoText.text = "Reloading...";
+        }
+        else
+        {
+            gunInfoText.text = bulletCount + "/30";
+        }
         
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
@@ -35,18 +55,41 @@ public class FirstPersonController : MonoBehaviour
             canJump = false;
         }
         delay -= Time.deltaTime;
-        if(delay < 0)
+        if (delay < 0 && reload == false)
         {
             canFire = true;
-            delay = 0.2f;
+            delay = 0.1f;
+            
         }
         if (Input.GetKey(KeyCode.Mouse0))
         {
-            if (canFire)
+            if (canFire && bulletCount > 0)
             {
                 GameObject tempProjectile = Instantiate(projectile, projectileSpawn.transform.position, projectileSpawn.transform.rotation);
                 tempProjectile.GetComponent<Rigidbody>().AddForce(arm.transform.forward * projectileSpeed);
+                bulletCount--;
                 canFire = false;
+                GetComponent<AudioSource>().Play();
+            }
+        }
+        if (Input.GetKey(KeyCode.R) || bulletCount <= 0)
+        {
+            reload = true;
+            canFire = false;
+        }
+        if (Input.GetKey(KeyCode.X) && bulletCount > 0 && reload)
+        {
+            reload = false;
+            canFire = true;
+        }
+        if (reload)
+        {
+            reloadTimer += Time.deltaTime;
+            if(reloadTimer > 3)
+            {
+                bulletCount = 30;
+                reloadTimer = 0;
+                reload = false;
             }
         }
 
