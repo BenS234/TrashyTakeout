@@ -18,10 +18,8 @@ public class PlayerScript : MonoBehaviour
     public float timer2;
     public bool winMessage;
     public bool hit;
-<<<<<<< HEAD
     public bool displayWin;
-=======
->>>>>>> b742cdb687700567f0121397cc4c37ab99a3b7d6
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,10 +31,7 @@ public class PlayerScript : MonoBehaviour
         bossScript = boss.GetComponent<BossScript>();
         loseMessage = false;
         timer2 = 0;
-<<<<<<< HEAD
         displayWin = false;
-=======
->>>>>>> b742cdb687700567f0121397cc4c37ab99a3b7d6
     }
 
     // Update is called once per frame
@@ -72,11 +67,8 @@ public class PlayerScript : MonoBehaviour
                 timer2 = 0;
             }
         }
-<<<<<<< HEAD
         if(health <= 0 & !displayWin)
-=======
         if(health <= 0)
->>>>>>> b742cdb687700567f0121397cc4c37ab99a3b7d6
         {
             transform.position = spawn.position;
             health = 100;
@@ -88,10 +80,7 @@ public class PlayerScript : MonoBehaviour
         }
         if (winMessage)
         {
-<<<<<<< HEAD
             displayWin = true;
-=======
->>>>>>> b742cdb687700567f0121397cc4c37ab99a3b7d6
             statusText.text = "The boss has been defeated!";
             timer2 += Time.deltaTime;
             if (timer2 > 2)
